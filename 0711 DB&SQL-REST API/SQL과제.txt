@@ -1,0 +1,21 @@
+# 과제 ①-1)
+select
+C.CustomerName as 'Customer name',
+ifnull(O.OrderID, '-') as 'number',
+ifnull(sum(OD.Quantity), 0) as 'total',
+ifnull(sum(OD.Quantity*P.Price), 0) as 'total spend'
+From Customers as C
+	Left outer join orders as O on C.CustomerID = O.CustomerID
+	Left outer join OrderDetails as OD on O.OrderID = OD.OrderID
+	Left outer join Products as P on OD.ProductID = P.ProductID
+Group by C.CustomerName
+Order by sum(OD.Quantity*P.Price) ASC;
+
+# 과제 ①-2)
+SELECT C.CategoryName, SUM(OD.Quantity) as TotalQuantitySold, SUM(OD.Quantity * P.Price) as TotalPriceSold
+FROM OrderDetails as od
+JOIN Products as p ON OD.ProductID = P.ProductID
+JOIN Categories as c ON P.CategoryID = C.CategoryID
+GROUP BY C.CategoryID, C.CategoryName
+HAVING SUM(OD.Quantity) > 2000
+ORDER BY TotalQuantitySold DESC;
